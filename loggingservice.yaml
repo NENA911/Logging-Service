@@ -1,0 +1,1257 @@
+openapi: 3.0.1
+info:
+  title: Logging Service
+  version: "1.0"
+servers:
+  - url: https://api.example.com/Logging/v1
+paths:
+  /LogEvents:
+    get:
+      tags:
+        - RetrieveLogEvents, ListLogEventsByEventTypeAndDateRange
+      summary: Retrieves LogEvents. Use limit and start parameters for pagination.
+      operationId: RetrieveLogEvents
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results to return
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: start
+          in: query
+          description: First item in the page of results, as an ordinal 1-based integer
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: logEventType
+          in: query
+          description: LogEvent type
+          required: false
+          schema:
+            $ref: '#/components/schemas/LogEventType'
+        - name: startTime
+          in: query
+          description: Start time
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: '2020-03-10T11:00:01-05:00'
+        - name: endTime
+          in: query
+          description: End time
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: '2020-03-15T11:00:01-05:00'
+      responses:
+        '200':
+          description: LogEvents found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogEventContainerArray'
+        '404':
+          description: Not found
+    post:
+      tags:
+        - LogEvent
+      summary: Logs a new event into the Logging Service
+      operationId: LogEvent
+      requestBody:
+        description: LogEvent data to add (JWS using flattened JSON serialization)
+        content:
+          application/json:
+            schema:
+              $ref: 'i3-common.yaml#/components/schemas/Jws'
+        required: true
+      responses:
+        '201':
+          description: LogEvent successfully logged
+          content:
+            application/json:
+              schema:
+                type: string
+                description: logEventId of the new logEvent
+        '434':
+          description: Signature Verification Failure
+        '438':
+          description: Unacceptable Algorithm
+        '454':
+          description: Unspecified Error
+        '460':
+          description: Bad LogEvent
+        '461':
+          description: LogEvent too big
+        '462':
+          description: LogEvent extension not on approved list
+        '463':
+          description: LogEvent extension on disallowed list
+  /LogEvents/{logEventId}:
+    get:
+      tags:
+        - RetrieveLogEvent
+      summary: Retrieves a LogEvent based on logEventId. LogEvent is returned in JWS using flattened JSON serialization
+      operationId: RetrieveLogEvent
+      parameters:
+        - name: logEventId
+          in: path
+          description: ID of the logEvent
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: LogEvent found
+          content:
+            application/json:
+              schema:
+                $ref: 'i3-common.yaml#/components/schemas/Jws'
+        '404':
+          description: Not found
+  /Conversations:
+    get:
+      tags:
+        - RetrieveConversationText
+      summary: Returns an HTML formatted record suitable for human consumption of the text portion of a call, including all text sent by all parties.
+      operationId: RetrieveConversationText
+      parameters:
+        - name: callId
+          in: query
+          description: Call ID of the call
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Conversation found
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: Not found
+        '454':
+          description: Unspecified Error
+        '464':
+          description: No Text in this Call
+  /LogEventIds:
+    get:
+      tags:
+        - ListLogEventsByCallId, ListLogEventsByIncidentId
+      summary: Retrieves LogEvents IDs. Use limit and start parameters for pagination.
+      operationId: ListLogEventsById
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results to return
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: start
+          in: query
+          description: First item in the page of results, as an ordinal 1-based integer
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: callId
+          in: query
+          description: Call ID of the call
+          required: false
+          schema:
+            type: string
+        - name: incidentId
+          in: query
+          description: Incident ID of the call
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: LogEvents found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogEventIdArray'
+        '404':
+          description: Not found
+        '454':
+          description: Unspecified Error
+  /CallIds:
+    get:
+      tags:
+        - ListCallsByIncidentId, ListCallsByDateRange, ListCallsByLocation
+      summary: Returns a list of Call Identifiers associated with a specific Incident Tracking Identifier, occurred within a time range or within a specified geographic region.
+      operationId: ListCalls
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results to return
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: start
+          in: query
+          description: First item in the page of results, as an ordinal 1-based integer
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: incidentId
+          in: query
+          description: Incident ID of the call
+          required: false
+          schema:
+            type: string
+        - name: startTime
+          in: query
+          description: Start time
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: '2020-03-10T11:00:01-05:00'
+        - name: endTime
+          in: query
+          description: End time
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: '2020-03-15T11:00:01-05:00'
+        - name: area
+          in: query
+          description: Area of interest
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Calls found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallIdArray'
+        '404':
+          description: Not found
+        '454':
+          description: Unspecified Error
+        '465':
+          description: Bad Timestamp
+        '466':
+          description: endTime occurs before startTime
+        '467':
+          description: Bad Geoshape
+  /IncidentIds:
+    get:
+      tags:
+        - ListIncidentsByDateRange, ListIncidentsByLocation
+      summary: Returns a list of Incident Tracking Identifiers occurring within a time/date range. Returns a list of Incidents that occurred within a specified geographic region.
+      operationId: ListIncidents
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results to return
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: start
+          in: query
+          description: First item in the page of results, as an ordinal 1-based integer
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: startTime
+          in: query
+          description: Start time
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: '2020-03-10T11:00:01-05:00'
+        - name: endTime
+          in: query
+          description: End time
+          required: false
+          schema:
+            type: string
+            format: date-time
+            example: '2020-03-15T11:00:01-05:00'
+        - name: area
+          in: query
+          description: Area of interest
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Incidents found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentIdArray'
+        '404':
+          description: Not found
+        '454':
+          description: Unspecified Error
+        '465':
+          description: Bad Timestamp
+        '466':
+          description: endTime occurs before startTime
+        '467':
+          description: Bad Geoshape
+  /AgencyIds:
+    get:
+      tags:
+        - ListAgenciesByCallId, ListAgenciesByIncidentId
+      summary: Returns a list of agencies involved in a Call or an Incident.
+      operationId: ListAgenciesById
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results to return
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: start
+          in: query
+          description: First item in the page of results, as an ordinal 1-based integer
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: incidentId
+          in: query
+          description: Incident ID of the call
+          required: false
+          schema:
+            type: string
+        - name: callId
+          in: query
+          description: Incident ID of the call
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agencies found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgencyIdArray'
+        '404':
+          description: Not found
+        '454':
+          description: Unspecified Error
+  /Versions:
+    servers:
+      - url: https://api.example.com/Logging
+        description: Override base path for Versions query
+    get:
+      tags:
+        - RetrieveVersions
+      summary: Retrieves all supported versions, vendor parameter is optional.
+      operationId: RetrieveVersions
+      responses:
+        '200':
+          description: Versions found
+          content:
+            application/json:
+              schema:
+                $ref: 'i3-common.yaml#/components/schemas/VersionsArray'
+components:
+  schemas:
+    LogEventContainerArray:
+      type: object
+      required:
+        - count
+        - totalCount
+        - logEventContainers
+      properties:
+        count:
+          type: integer
+          format: int32
+          description: Number of items in the array
+        totalCount:
+          type: integer
+          format: int32
+          description: Total number of items found
+        logEventContainers:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogEventContainer'
+          description: Array of LogEvent Container objects
+    LogEventContainer:
+      type: object
+      required:
+        - logEventId
+        - logEvent
+      properties:
+        logEventId:
+          type: string
+          readOnly: true
+        rtsp:
+          type: array
+          items:
+            type: string
+        logEvent:
+          $ref: 'i3-common.yaml#/components/schemas/Jws'
+    LogEventIdArray:
+      type: object
+      required:
+        - count
+        - totalCount
+        - logEventIds
+      properties:
+        count:
+          type: integer
+          format: int32
+          description: Number of items in the array
+        totalCount:
+          type: integer
+          format: int32
+          description: Total number of items found
+        logEventIds:
+          type: array
+          items:
+            type: string
+          description: Array of LogEvent IDs
+    CallIdArray:
+      type: object
+      required:
+        - count
+        - totalCount
+        - callIds
+      properties:
+        count:
+          type: integer
+          format: int32
+          description: Number of items in the array
+        totalCount:
+          type: integer
+          format: int32
+          description: Total number of items found
+        callIds:
+          type: array
+          items:
+            type: string
+          description: Array of Call IDs
+    IncidentIdArray:
+      type: object
+      required:
+        - count
+        - totalCount
+        - incidentIds
+      properties:
+        count:
+          type: integer
+          format: int32
+          description: Number of items in the array
+        totalCount:
+          type: integer
+          format: int32
+          description: Total number of items found
+        logEventIds:
+          type: array
+          items:
+            type: string
+          description: Array of Incident IDs
+    AgencyIdArray:
+      type: object
+      required:
+        - count
+        - totalCount
+        - agencyIds
+      properties:
+        count:
+          type: integer
+          format: int32
+          description: Number of items in the array
+        totalCount:
+          type: integer
+          format: int32
+          description: Total number of items found
+        agencyIds:
+          type: array
+          items:
+            type: string
+          description: Array of Agency IDs
+    LogEventType:
+      type: string
+      enum: [CallProcessLogEvent, CallStartLogEvent, CallEndLogEvent, RecCallStartLogEvent, RecCallEndLogEvent, CallTransferLogEvent, RouteLogEvent, MediaStartLogEvent, MediaEndLogEvent, RecMediaStartLogEvent, RecMediaEndLogEvent,
+             RecordingFailedLogEvent, MessageLogEvent, AdditionalAgencyLogEvent, IncidentMergeLogEvent, IncidentUnMergeLogEvent, IncidentLinkLogEvent, IncidentUnLinkLogEvent, IncidentClearLogEvent, IncidentReopenLogEvent, LostQueryLogEvent,
+             LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent, EidoLogEvent,
+             DiscrepancyReportLogEvent, ElementStateChangeLogEvent, ServiceStateChangeLogEvent, AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent, LocationQueryLogEvent, LocationResponseLogEvent, CallStateChangeLogEvent,
+             GatewayCallLogEvent, HookflashLogEvent, LegacyDigitsLogEvent, AgentStateChangeLogEvent, QueueStateChangeLogEvent, KeepAliveFailureLogEvent, RouteRuleMsgLogEvent, PolicyChangeLogEvent,
+             VersionsLogEvent, SubscribeLogEvent]
+    LogEvent:
+      type: object
+      required:
+        - logEventType
+        - timestamp
+        - agencyId
+        - elementId
+      properties:
+        clientAssignedIdentifier:
+          type: string
+        logEventType:
+          $ref: '#/components/schemas/LogEventType'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2020-03-10T11:00:01-05:00'
+        elementId:
+          type: string
+        agencyId:
+          type: string
+        agencyAgentId:
+          type: string
+        agencyPositionId:
+          type: string
+        callId:
+          type: string
+        incidentId:
+          type: string
+        callIdSip:
+          type: string
+        ipAddressPort:
+          type: string
+        extension:
+          type: object
+      discriminator:
+        propertyName: logEventType
+    CallProcessLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+    CallStartLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - $ref: '#/components/schemas/CallLogEvent'
+    CallEndLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - $ref: '#/components/schemas/CallLogEvent'
+    RecCallStartLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - $ref: '#/components/schemas/CallLogEvent'
+    RecCallEndLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - $ref: '#/components/schemas/CallLogEvent'
+    CallTransferLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - target
+            - targetCallIdSip
+          properties:
+            target:
+              type: string
+              format: uri
+            targetCallIdSip:
+              type: string
+    RouteLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - recipientUri
+            - ruleId
+            - policyOwner
+            - policyType
+          properties:
+            recipientUri:
+              type: string
+              format: uri
+            ruleId:
+              type: string
+            policyOwner:
+              type: string
+            policyType:
+              type: string
+              description: Values limited to those in the policyType registry
+            policyQueueName:
+              type: string
+              format: uri
+            policyId:
+              type: string
+            cause:
+              type: string
+    MediaStartLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - sdp
+            - mediaLabal
+            - direction
+          properties:
+            sdp:
+              type: string
+            mediaLabel:
+              type: array
+              items:
+                  type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+    MediaEndLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - mediaLabel
+          properties:
+            mediaLabel:
+              type: array
+              items:
+                type: string
+            mediaQualityStats:
+              type: string
+    RecMediaStartLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - sdp
+            - mediaLabel
+          properties:
+            sdp:
+              type: string
+            mediaLabel:
+              type: array
+              items:
+                type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            mediaTranscodeFrom:
+              type: string
+    RecMediaEndLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - mediaLabel
+          properties:
+            mediaLabel:
+              type: array
+              items:
+                type: string
+            mediaQualityStats:
+              type: string
+            mediaTranscodeFrom:
+              type: string
+    RecordingFailedLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - sdp
+            - reasonCode
+            - reasonText
+          properties:
+            sdp:
+              type: string
+            reasonCode:
+              type: string
+              description: Values limited to those in the ReasonCode registry
+            reasonText:
+              type: string
+    MessageLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - text
+            - direction
+          properties:
+            text:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+    AdditionalAgencyLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - agencyId
+          properties:
+            agencyId:
+              type: string
+    IncidentMergeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - incidentId
+            - mergeIncidentId
+          properties:
+            incidentId:
+              type: string
+            mergeIncidentId:
+              type: string
+    IncidentUnMergeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - incidentId
+            - unmergedFromIncidentId
+          properties:
+            incidentId:
+              type: string
+            unmergedFromIncidentId:
+              type: string
+    IncidentLinkLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - incidentId
+            - linkedIncidentId
+            - relationship
+          properties:
+            incidentId:
+              type: string
+            linkedIncidentId:
+              type: string
+            relationship:
+              type: string
+              enum: [parent, child, unspecified]
+    IncidentUnLinkLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - incidentId
+            - unlinkedFromIncidentId
+          properties:
+            incidentId:
+              type: string
+            unlinkedFromIncidentId:
+              type: string
+    IncidentClearLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+    IncidentReopenLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+    LostQueryLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - queryAdapter
+            - direction
+            - queryId
+          properties:
+            queryAdapter:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            queryId:
+              type: string
+            malformedQuery:
+              type: string
+    LostResponseLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - responseAdapter
+            - direction
+            - responseId
+          properties:
+            responseAdapter:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            responseStatus:
+              type: string
+            responseId:
+              type: string
+            malformedResponse:
+              type: string
+    CallSignalingMessageLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - text
+            - direction
+          properties:
+            text:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            protocol:
+              type: string
+    SipRecMetadataLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - text
+          properties:
+            text:
+              type: string
+    NonRtpMediaMessageLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - text
+            - direction
+          properties:
+            text:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            protocol:
+              type: string
+    AliLocationQueryLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - text
+            - direction
+            - queryId
+          properties:
+            text:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            queryId:
+              type: string
+    AliLocationResponseLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - text
+            - direction
+            - responseId
+          properties:
+            text:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            responseStatus:
+              type: string
+              description: Values limited to those in the Status Codes registry
+            responseId:
+              type: string
+    MalformedMessageLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - text
+            - ipAddress
+          properties:
+            text:
+              type: string
+            ipAddress:
+              type: string
+            explanationText:
+              type: string
+    IncidentSplitLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - incidentId
+            - type
+          properties:
+            incidentId:
+              type: string
+            type:
+              type: string
+              enum: [old, new]
+    EidoLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - direction
+          properties:
+            body:
+              type: string
+            reference:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+    DiscrepancyReportLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - contents
+            - direction
+            - type
+          properties:
+            contents:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            type:
+              type: string
+    ElementStateChangeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - notificationContents
+            - direction
+          properties:
+            notificationContents:
+              type: string
+            affectedElementId:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+    ServiceStateChangeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - newState
+            - affectedServiceIdentifier
+            - direction
+          properties:
+            newState:
+              type: string
+            newSecurityPosture:
+              type: string
+            affectedServiceIdentifier:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+    AdditionalDataQueryLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - uri
+            - text
+            - direction
+            - queryId
+          properties:
+            uri:
+              type: string
+              format: uri
+            text:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            queryId:
+              type: string
+    AdditionalDataResponseLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - text
+            - direction
+            - responseId
+          properties:
+            text:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            responseStatus:
+              type: string
+              description: Values limited to those in the Status Codes registry
+            responseId:
+              type: string
+    LocationQueryLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - uri
+            - text
+            - direction
+            - queryId
+          properties:
+            uri:
+              type: string
+              format: uri
+            text:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            queryId:
+              type: string
+    LocationResponseLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - text
+            - direction
+            - responseId
+          properties:
+            text:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            responseStatus:
+              type: string
+              description: Values limited to those in the Status Codes registry
+            responseId:
+              type: string
+    CallStateChangeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - state
+            - direction
+            - legCallId
+          properties:
+            state:
+              type: string
+              description: Values limited to those in the CallStates registry
+            direction:
+              $ref: '#/components/schemas/Direction'
+            legCallId:
+              type: string
+            targetId:
+              type: string
+            changeReason:
+              type: string
+    GatewayCallLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          properties:
+            portTrunkGroup:
+              type: string
+            pAni:
+              type: integer
+              format: int32
+            digits:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            signallingProtocol:
+              type: string
+            legacyCallId:
+              type: string
+    HookflashLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          properties:
+            lineId:
+              type: string
+    LegacyDigitsLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - digits
+            - sentReceived
+            - type
+          properties:
+            digits:
+              type: string
+            sentReceived:
+              type: string
+              enum: [sent, received]
+            type:
+              type: string
+              enum: [DTMF, MF]
+    AgentStateChangeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - primaryAgentState
+          properties:
+            primaryAgentState:
+              type: string
+              enum: [Available, NotAvailable]
+            secondaryAgentState:
+              type: string
+              description: Values limited to those in the Secondary Agent State registry
+            deviceId:
+              type: string
+    QueueStateChangeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - notificationContents
+            - queueId
+            - direction
+          properties:
+            notificationContents:
+              type: string
+            queueId:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+    KeepAliveFailureLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - responseStatus
+          properties:
+            responseStatus:
+              type: string
+              description: Values limited to those in the Status Codes registry
+    RouteRuleMsgLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - ruleId
+            - priority
+            - message
+            - policyOwner
+            - policyType
+          properties:
+            ruleId:
+              type: string
+            priority:
+              type: integer
+              format: int32
+            message:
+              type: string
+            policyOwner:
+              type: string
+            policyType:
+              type: string
+              description: Values limited to those in the policyType registry
+            policyQueueName:
+              type: string
+              format: uri
+            policyId:
+              type: string
+    PolicyChangeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - policyType
+            - owner
+            - changeType
+            - policyContent
+            - policyStoreId
+            - policyEditor
+          properties:
+            policyType:
+              type: string
+              description: Values limited to those in the policyType registry
+            owner:
+              type: string
+            changeType:
+              type: string
+              enum: [CREATE, UPDATE, DELETE]
+            policyContent:
+              type: string
+            policyStoreId:
+              type: string
+            policyEditor:
+              type: string
+            policyQueueName:
+              type: string
+              format: uri
+            policyId:
+              type: string
+    VersionsLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - source
+            - response
+          properties:
+            source:
+              type: string
+            response:
+              type: string
+    SubscribeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - package
+            - peer
+            - parameter
+            - expiration
+            - response
+            - purpose
+            - direction
+            - subscriptionId
+          properties:
+            package:
+              type: string
+              description: Values limited to those in the Event Package registry
+            peer:
+              type: string
+            parameter:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  value:
+                    type: string
+            expiration:
+              type: integer
+              format: int32
+            response:
+              type: string
+            purpose:
+              type: string
+              enum: [initial, refresh, terminate]
+            direction:
+              $ref: '#/components/schemas/Direction'
+            subscriptionId:
+              type: string
+    CallLogEvent:
+      type: object
+      required:
+        - direction
+      properties:
+        direction:
+          $ref: '#/components/schemas/Direction'
+        standardPrimaryCallType:
+          type: string
+          description: Values limited to those in the LogEvent CallTypes registry
+        standardSecondaryCallType:
+          type: string
+          description: Values limited to those in the LogEvent CallTypes registry
+        localCallType:
+          type: string
+        localUse:
+          type: object
+        to:
+          type: string
+        from:
+          type: string
+    Direction:
+      type: string
+      enum: [incoming, outgoing]
