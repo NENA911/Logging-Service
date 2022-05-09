@@ -1283,7 +1283,7 @@ components:
               type: string
             changeReason:
               type: string
-   AnnouncementStartLogEvent:
+    AnnouncementStartLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
@@ -1294,7 +1294,7 @@ components:
               type: string
             announcementTag:
               type: string
-   AnnouncementEndLogEvent:
+    AnnouncementEndLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
