@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.0"
+  version: "1.2"
 servers:
   - url: https://api.example.com/Logging/v1
 paths:
@@ -495,10 +495,10 @@ components:
       type: string
       enum: [CallProcessLogEvent, CallStartLogEvent, CallEndLogEvent, RecCallStartLogEvent, RecCallEndLogEvent, CallTransferLogEvent, RouteLogEvent, MediaStartLogEvent, MediaEndLogEvent, RecMediaStartLogEvent, RecMediaEndLogEvent,
              RecordingFailedLogEvent, MessageLogEvent, AdditionalAgencyLogEvent, IncidentMergeLogEvent, IncidentUnMergeLogEvent, IncidentLinkLogEvent, IncidentUnLinkLogEvent, IncidentClearLogEvent, IncidentReopenLogEvent, LostQueryLogEvent,
-             LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent, EidoLogEvent,
+             LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent,
              DiscrepancyReportLogEvent, ElementStateChangeLogEvent, ServiceStateChangeLogEvent, AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent, LocationQueryLogEvent, LocationResponseLogEvent, CallStateChangeLogEvent,
              GatewayCallLogEvent, HookflashLogEvent, LegacyDigitsLogEvent, AgentStateChangeLogEvent, QueueStateChangeLogEvent, KeepAliveFailureLogEvent, RouteRuleMsgLogEvent, PolicyChangeLogEvent,
-             VersionsLogEvent, SubscribeLogEvent]
+             VersionsLogEvent, SubscribeLogEvent, EidoLogEvent, EidoDereferenceFactoryQueryLogEvent, EidoDereferenceFactoryQueryResponse, SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent, SubscriptionTerminatedLogEvent, EidoDeniedLogEvent, EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent, WebSocketTerminatedLogEvent]
     LogEvent:
       type: object
       required:
@@ -892,12 +892,18 @@ components:
           required:
             - direction
           properties:
+            direction:
+             $ref: '#/components/schemas/Direction'
+            peerId:
+              type: string
+              format: uri
             body:
               type: string
             reference:
               type: string
-            direction:
-              $ref: '#/components/schemas/Direction'
+              format: uri
+            subscriptionId:
+              type: string
     DiscrepancyReportLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
@@ -1255,3 +1261,217 @@ components:
     Direction:
       type: string
       enum: [incoming, outgoing]
+    EidoDereferenceFactoryQueryLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - queryId
+            - direction
+            - peerId
+            - incidentId
+          properties:
+            queryId:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            incidentId:
+              type: string
+            peerId:
+              type: string
+              format: uri
+    EidoDereferenceFactoryQueryResponseLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - queryId
+            - direction
+            - peerId
+          properties:
+            peerId:
+              type: string
+              format: uri
+            queryId:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            generatedURI:
+              type: string
+              format: uri
+            responseError:
+              type: string
+    SubscriptionRequested:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - peerId
+            - direction
+            - queryId
+          properties:
+            peerId:
+              type: string
+              format: uri
+            direction:
+              $ref: '#/components/schemas/Direction'
+            queryId:
+              type: string
+            expires:
+              type: integer
+              format: int32
+            incidentId:
+              type: string
+            subscriptionId:
+              type: string
+    SubscriptionRequestedResponseLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - queryId
+            - direction
+          properties:
+            queryId:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            subscriptionId:
+              type: string
+            expires:
+              type: integer
+              format: int32
+            responseError:
+              type: string
+    SubscriptionTerminated:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - peerId
+            - subscriptionId
+            - direction
+            - reason
+          properties:
+            peerId:
+              type: string
+              format: uri
+            incidentId:
+              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
+            reason:
+              type: string
+            subscriptionId:
+              type: string
+    SubscriptionTerminatedResponseLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - peerId
+            - direction
+            - queryId
+            - subscriptionId
+            - statusCode
+            - statusDescription
+          properties:
+            peerId:
+              type: string
+              format: uri
+            direction:
+              $ref: '#/components/schemas/Direction'
+            queryId:
+              type: string
+            subscriptionId:
+              type: string
+            statusCode:
+              type: string
+            statusDescription:
+              type: string
+    EidoDeniedLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - peerId
+            - incidentId
+            - reason
+          properties:
+            peerId:
+              type: string
+              format: uri
+            incidentId:
+              type: string
+            reason:
+              type: string
+    EidoTransmissionErrorLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - peerId
+            - transactionId
+            - direction
+            - retries
+            - status
+          properties:
+            peerId:
+              type: string
+              format: uri
+            incidentId:
+              type: string
+            retries:
+              type: integer
+              format: int32
+            status:
+              type: string
+            transactionId:
+              type: string
+    WebSocketEstablishedLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - peerId
+            - direction
+            - statusCode
+            - statusDescription
+            - webSocketId
+          properties:
+            peerId:
+              type: string
+              format: uri
+            direction:
+              $ref: '#/components/schemas/Direction'
+            status:
+              type: string
+            statusDescription:
+              type: string
+            webSocketId:
+              type: string
+
+    WebSocketTerminatedLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - peerId
+            - direction
+            - closeCode
+            - closeReason
+            - webSocketId
+          properties:
+            peerId:
+              type: string
+              format: uri
+            direction:
+              $ref: '#/components/schemas/Direction'
+            closeCode:
+              type: integer
+              format: uint16
+            closeReason:
+              type: string
+            webSocketId:
+              type: string
+
