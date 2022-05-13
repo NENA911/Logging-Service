@@ -1046,8 +1046,7 @@ components:
             portTrunkGroup:
               type: string
             pAni:
-              type: integer
-              format: int32
+              type: string
             digits:
               type: string
             direction:
