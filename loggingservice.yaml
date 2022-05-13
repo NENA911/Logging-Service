@@ -1052,9 +1052,8 @@ components:
             portTrunkGroup:
               type: string
             pAni:
-              type: integer
-              format: int32
-            digits:
+              type: string
+              digits:
               type: string
             direction:
               $ref: '#/components/schemas/Direction'
