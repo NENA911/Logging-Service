@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.0"
+  version: "1.0.1"
 servers:
   - url: https://api.example.com/Logging/v1
 paths:
@@ -1046,8 +1046,7 @@ components:
             portTrunkGroup:
               type: string
             pAni:
-              type: integer
-              format: int32
+              type: string
             digits:
               type: string
             direction:
