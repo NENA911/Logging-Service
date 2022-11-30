@@ -560,7 +560,6 @@ components:
         - type: object
           required:
             - target
-            - targetCallIdSip
           properties:
             target:
               type: string
@@ -1031,7 +1030,6 @@ components:
           required:
             - state
             - direction
-            - legCallId
           properties:
             state:
               type: string
