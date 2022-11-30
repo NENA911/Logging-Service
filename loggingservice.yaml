@@ -560,7 +560,6 @@ components:
         - type: object
           required:
             - target
-            - targetCallIdSip
           properties:
             target:
               type: string
@@ -1025,8 +1024,7 @@ components:
           required:
             - state
             - direction
-            - legCallId
-          properties:
+             properties:
             state:
               type: string
               description: Values limited to those in the CallStates registry
