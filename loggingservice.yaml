@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.0.1"
+  version: "1.0.2"
 servers:
   - url: https://api.example.com/Logging/v1
 paths:
@@ -1024,7 +1024,7 @@ components:
           required:
             - state
             - direction
-             properties:
+          properties:
             state:
               type: string
               description: Values limited to those in the CallStates registry
