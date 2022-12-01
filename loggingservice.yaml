@@ -498,7 +498,7 @@ components:
              LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent, EidoLogEvent,
              DiscrepancyReportLogEvent, ElementStateChangeLogEvent, ServiceStateChangeLogEvent, AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent, LocationQueryLogEvent, LocationResponseLogEvent, CallStateChangeLogEvent,
              GatewayCallLogEvent, HookflashLogEvent, LegacyDigitsLogEvent, AgentStateChangeLogEvent, QueueStateChangeLogEvent, KeepAliveFailureLogEvent, RouteRuleMsgLogEvent, PolicyChangeLogEvent,
-             VersionsLogEvent, SubscribeLogEvent, AnnoucementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent]
+             VersionsLogEvent, SubscribeLogEvent, AnnouncementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent]
     LogEvent:
       type: object
       required:
