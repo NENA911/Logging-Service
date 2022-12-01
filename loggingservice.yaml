@@ -498,7 +498,7 @@ components:
              LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent,
              DiscrepancyReportLogEvent, ElementStateChangeLogEvent, ServiceStateChangeLogEvent, AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent, LocationQueryLogEvent, LocationResponseLogEvent, CallStateChangeLogEvent,
              GatewayCallLogEvent, HookflashLogEvent, LegacyDigitsLogEvent, AgentStateChangeLogEvent, QueueStateChangeLogEvent, KeepAliveFailureLogEvent, RouteRuleMsgLogEvent, PolicyChangeLogEvent,
-             VersionsLogEvent, SubscribeLogEvent, AnnoucementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent, EidoLogEvent, EidoDereferenceFactoryQueryLogEvent, EidoDereferenceFactoryQueryResponse, SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent, SubscriptionTerminatedLogEvent, EidoDeniedLogEvent, EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent, WebSocketTerminatedLogEvent]
+             VersionsLogEvent, SubscribeLogEvent, AnnouncementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent, EidoLogEvent, EidoDereferenceFactoryQueryLogEvent, EidoDereferenceFactoryQueryResponse, SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent, SubscriptionTerminatedLogEvent, EidoDeniedLogEvent, EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent, WebSocketTerminatedLogEvent]
     LogEvent:
       type: object
       required:
