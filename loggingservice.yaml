@@ -1,7 +1,8 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.0.1"
+  version: "1.1"
+
 servers:
   - url: https://api.example.com/Logging/v1
 paths:
@@ -498,7 +499,7 @@ components:
              LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent, EidoLogEvent,
              DiscrepancyReportLogEvent, ElementStateChangeLogEvent, ServiceStateChangeLogEvent, AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent, LocationQueryLogEvent, LocationResponseLogEvent, CallStateChangeLogEvent,
              GatewayCallLogEvent, HookflashLogEvent, LegacyDigitsLogEvent, AgentStateChangeLogEvent, QueueStateChangeLogEvent, KeepAliveFailureLogEvent, RouteRuleMsgLogEvent, PolicyChangeLogEvent,
-             VersionsLogEvent, SubscribeLogEvent]
+             VersionsLogEvent, SubscribeLogEvent, AnnouncementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent]
     LogEvent:
       type: object
       required:
@@ -560,7 +561,6 @@ components:
         - type: object
           required:
             - target
-            - targetCallIdSip
           properties:
             target:
               type: string
@@ -1025,7 +1025,6 @@ components:
           required:
             - state
             - direction
-            - legCallId
           properties:
             state:
               type: string
@@ -1254,3 +1253,53 @@ components:
     Direction:
       type: string
       enum: [incoming, outgoing]
+    SessionStartLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - $ref: '#/components/schemas/CallLogEvent'
+    SessionEndLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - $ref: '#/components/schemas/CallLogEvent'
+    SessionStateChangeLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - state
+            - direction
+            - legCallId
+          properties:
+            state:
+              type: string
+              description: Values limited to those in the CallStates registry
+            direction:
+              $ref: '#/components/schemas/Direction'
+            legCallId:
+              type: string
+            targetId:
+              type: string
+            changeReason:
+              type: string
+    AnnouncementStartLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - announcementType
+          properties:
+            announcementType:
+              type: string
+            announcementTag:
+              type: string
+    AnnouncementEndLogEvent:
+      allOf:
+        - $ref: '#/components/schemas/LogEvent'
+        - type: object
+          required:
+            - announcementType
+          properties:
+            announcementType:
+              type: string
+            announcementTag:
+              type: string
