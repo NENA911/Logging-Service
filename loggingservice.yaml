@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.2"
+  version: "1.2.1"
 servers:
   - url: https://api.example.com/Logging/v1
 paths:
@@ -498,7 +498,9 @@ components:
              LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent,
              DiscrepancyReportLogEvent, ElementStateChangeLogEvent, ServiceStateChangeLogEvent, AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent, LocationQueryLogEvent, LocationResponseLogEvent, CallStateChangeLogEvent,
              GatewayCallLogEvent, HookflashLogEvent, LegacyDigitsLogEvent, AgentStateChangeLogEvent, QueueStateChangeLogEvent, KeepAliveFailureLogEvent, RouteRuleMsgLogEvent, PolicyChangeLogEvent,
-             VersionsLogEvent, SubscribeLogEvent, AnnouncementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent, EidoLogEvent, EidoDereferenceFactoryQueryLogEvent, EidoDereferenceFactoryQueryResponse, SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent, SubscriptionTerminatedLogEvent, EidoDeniedLogEvent, EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent, WebSocketTerminatedLogEvent]
+             VersionsLogEvent, SubscribeLogEvent, AnnouncementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent, EidoLogEvent, EidoDereferenceFactoryQueryLogEvent, 
+             EidoDereferenceFactoryQueryResponse, SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent, SubscriptionTerminatedLogEvent, EidoDeniedLogEvent, EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent, 
+             WebSocketTerminatedLogEvent]
     LogEvent:
       type: object
       required:
@@ -1348,6 +1350,8 @@ components:
               format: uri
             responseError:
               type: string
+            responseText:
+              type: string
     SubscriptionRequested:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
@@ -1388,7 +1392,9 @@ components:
             expires:
               type: integer
               format: int32
-            responseError:
+            errorCode:
+              type: string
+            errorText:
               type: string
     SubscriptionTerminated:
       allOf:
@@ -1421,7 +1427,7 @@ components:
             - queryId
             - subscriptionId
             - statusCode
-            - statusDescription
+            - statusText
           properties:
             peerId:
               type: string
@@ -1434,7 +1440,7 @@ components:
               type: string
             statusCode:
               type: string
-            statusDescription:
+            statusText:
               type: string
     EidoDeniedLogEvent:
       allOf:
@@ -1443,14 +1449,17 @@ components:
           required:
             - peerId
             - incidentId
-            - reason
+            - reasonCode
+            - reasonText
           properties:
             peerId:
               type: string
               format: uri
             incidentId:
               type: string
-            reason:
+            reasonCode:
+              type: string
+            reasonText:
               type: string
     EidoTransmissionErrorLogEvent:
       allOf:
@@ -1461,7 +1470,8 @@ components:
             - transactionId
             - direction
             - retries
-            - status
+            - reasonCode
+            - reasonText
           properties:
             peerId:
               type: string
@@ -1471,7 +1481,9 @@ components:
             retries:
               type: integer
               format: int32
-            status:
+            reasonCode:
+              type: string
+            reasonText:
               type: string
             transactionId:
               type: string
@@ -1506,7 +1518,7 @@ components:
             - peerId
             - direction
             - closeCode
-            - closeReason
+            - closeText
             - webSocketId
           properties:
             peerId:
@@ -1515,9 +1527,8 @@ components:
             direction:
               $ref: '#/components/schemas/Direction'
             closeCode:
-              type: integer
-              format: uint16
-            closeReason:
+              type: string
+            closeText:
               type: string
             webSocketId:
               type: string
