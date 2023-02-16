@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.1"
+  version: "1.1.1"
 
 servers:
   - url: https://api.example.com/Logging/v1
@@ -922,6 +922,8 @@ components:
             - direction
           properties:
             notificationContents:
+              type: string
+            StateChangeNotificationContents:
               type: string
             affectedElementId:
               type: string
