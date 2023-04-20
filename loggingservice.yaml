@@ -1527,8 +1527,7 @@ components:
             direction:
               $ref: '#/components/schemas/Direction'
             closeCode:
-              type: integer
-              format: uint16
+              type: uint16
             closeText:
               type: string
             webSocketId:
