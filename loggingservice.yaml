@@ -928,6 +928,8 @@ components:
           properties:
             notificationContents:
               type: string
+            StateChangeNotificationContents:
+              type: string
             affectedElementId:
               type: string
             direction:
@@ -1051,7 +1053,7 @@ components:
               type: string
             pAni:
               type: string
-              digits:
+            digits:
               type: string
             direction:
               $ref: '#/components/schemas/Direction'
