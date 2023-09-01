@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.4"
+  version: "1.0"
 servers:
   - url: https://api.example.com/Logging/v1
 paths:
@@ -495,12 +495,10 @@ components:
       type: string
       enum: [CallProcessLogEvent, CallStartLogEvent, CallEndLogEvent, RecCallStartLogEvent, RecCallEndLogEvent, CallTransferLogEvent, RouteLogEvent, MediaStartLogEvent, MediaEndLogEvent, RecMediaStartLogEvent, RecMediaEndLogEvent,
              RecordingFailedLogEvent, MessageLogEvent, AdditionalAgencyLogEvent, IncidentMergeLogEvent, IncidentUnMergeLogEvent, IncidentLinkLogEvent, IncidentUnLinkLogEvent, IncidentClearLogEvent, IncidentReopenLogEvent, LostQueryLogEvent,
-             LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent,
+             LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent, EidoLogEvent,
              DiscrepancyReportLogEvent, ElementStateChangeLogEvent, ServiceStateChangeLogEvent, AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent, LocationQueryLogEvent, LocationResponseLogEvent, CallStateChangeLogEvent,
              GatewayCallLogEvent, HookflashLogEvent, LegacyDigitsLogEvent, AgentStateChangeLogEvent, QueueStateChangeLogEvent, KeepAliveFailureLogEvent, RouteRuleMsgLogEvent, PolicyChangeLogEvent,
-             VersionsLogEvent, SubscribeLogEvent, AnnouncementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent, EidoLogEvent, EidoDereferenceFactoryQueryLogEvent, 
-             EidoDereferenceFactoryQueryResponse, SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent, SubscriptionTerminatedLogEvent, SubscriptionTerminatedResponseLogEvent, EidoDeniedLogEvent, EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent,
-             WebSocketTerminatedLogEvent, RequestForServiceLogEvent, RequestAwarenessLogEvent, CancelRequestLogEvent, ResponseToRequestLogEvent, ResourceMesssageLogEvent, ResourceDiscoveryLogEvent]
+             VersionsLogEvent, SubscribeLogEvent]
     LogEvent:
       type: object
       required:
@@ -562,6 +560,7 @@ components:
         - type: object
           required:
             - target
+            - targetCallIdSip
           properties:
             target:
               type: string
@@ -893,18 +892,12 @@ components:
           required:
             - direction
           properties:
-            direction:
-             $ref: '#/components/schemas/Direction'
-            peerId:
-              type: string
-              format: uri
             body:
               type: string
             reference:
               type: string
-              format: uri
-            subscriptionId:
-              type: string
+            direction:
+              $ref: '#/components/schemas/Direction'
     DiscrepancyReportLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
@@ -929,8 +922,6 @@ components:
             - direction
           properties:
             notificationContents:
-              type: string
-            StateChangeNotificationContents:
               type: string
             affectedElementId:
               type: string
@@ -1034,6 +1025,7 @@ components:
           required:
             - state
             - direction
+            - legCallId
           properties:
             state:
               type: string
@@ -1054,7 +1046,8 @@ components:
             portTrunkGroup:
               type: string
             pAni:
-              type: string
+              type: integer
+              format: int32
             digits:
               type: string
             direction:
@@ -1262,373 +1255,3 @@ components:
     Direction:
       type: string
       enum: [incoming, outgoing]
-    SessionStartLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - $ref: '#/components/schemas/CallLogEvent'
-    SessionEndLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - $ref: '#/components/schemas/CallLogEvent'
-    SessionStateChangeLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - state
-            - direction
-            - legCallId
-          properties:
-            state:
-              type: string
-              description: Values limited to those in the CallStates registry
-            direction:
-              $ref: '#/components/schemas/Direction'
-            legCallId:
-              type: string
-            targetId:
-              type: string
-            changeReason:
-              type: string
-    AnnouncementStartLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - announcementType
-          properties:
-            announcementType:
-              type: string
-            announcementTag:
-              type: string
-    AnnouncementEndLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - announcementType
-          properties:
-            announcementType:
-              type: string
-            announcementTag:
-              type: string
-    EidoDereferenceFactoryQueryLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - queryId
-            - direction
-            - peerId
-            - incidentId
-          properties:
-            queryId:
-              type: string
-            direction:
-              $ref: '#/components/schemas/Direction'
-            incidentId:
-              type: string
-            peerId:
-              type: string
-              format: uri
-    EidoDereferenceFactoryQueryResponseLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - queryId
-            - direction
-            - peerId
-          properties:
-            peerId:
-              type: string
-              format: uri
-            queryId:
-              type: string
-            direction:
-              $ref: '#/components/schemas/Direction'
-            generatedURI:
-              type: string
-              format: uri
-            responseError:
-              type: string
-            responseText:
-              type: string
-    SubscriptionRequested:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - queryId
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-            queryId:
-              type: string
-            expires:
-              type: integer
-              format: int32
-            incidentId:
-              type: string
-            subscriptionId:
-              type: string
-    SubscriptionRequestedResponseLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - queryId
-            - direction
-          properties:
-            queryId:
-              type: string
-            direction:
-              $ref: '#/components/schemas/Direction'
-            subscriptionId:
-              type: string
-            expires:
-              type: integer
-              format: int32
-            errorCode:
-              type: string
-            errorText:
-              type: string
-    SubscriptionTerminated:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - subscriptionId
-            - direction
-            - reason
-          properties:
-            peerId:
-              type: string
-              format: uri
-            incidentId:
-              type: string
-            direction:
-              $ref: '#/components/schemas/Direction'
-            reason:
-              type: string
-            subscriptionId:
-              type: string
-    SubscriptionTerminatedResponseLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - queryId
-            - subscriptionId
-            - statusCode
-            - statusText
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-            queryId:
-              type: string
-            subscriptionId:
-              type: string
-            statusCode:
-              type: string
-            statusText:
-              type: string
-    EidoDeniedLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - incidentId
-            - reasonCode
-            - reasonText
-          properties:
-            peerId:
-              type: string
-              format: uri
-            incidentId:
-              type: string
-            reasonCode:
-              type: string
-            reasonText:
-              type: string
-    EidoTransmissionErrorLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - transactionId
-            - direction
-            - retries
-            - reasonCode
-            - reasonText
-          properties:
-            peerId:
-              type: string
-              format: uri
-            incidentId:
-              type: string
-            retries:
-              type: integer
-              format: int32
-            reasonCode:
-              type: string
-            reasonText:
-              type: string
-            transactionId:
-              type: string
-    WebSocketEstablishedLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - statusCode
-            - statusDescription
-            - webSocketId
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-            status:
-              type: string
-            statusDescription:
-              type: string
-            webSocketId:
-              type: string
-
-    WebSocketTerminatedLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - closeCode
-            - closeText
-            - webSocketId
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-            closeCode:
-              type: integer
-              format: uint16
-            closeText:
-              type: string
-            webSocketId:
-              type: string
-    RequestForServiceLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - requesttId
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-            requestId:
-              type: string
-    RequestAwarenessLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - requesttId
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-            requestId:
-              type: string
-    CancelRequestLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - requesttId
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-    ResponseToRequestLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - responseCode
-            - responseReason
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-            responseCode:
-              type: string
-            responseText:
-              type: string
-    ResourceMesssageLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - resourceMessage
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-            resourceMessage:
-              type: object
-    ResourceDiscoveryLogEvent:
-      allOf:
-        - $ref: '#/components/schemas/LogEvent'
-        - type: object
-          required:
-            - peerId
-            - direction
-            - emergencyResourceComponent
-          properties:
-            peerId:
-              type: string
-              format: uri
-            direction:
-              $ref: '#/components/schemas/Direction'
-            emergencyResourceComponent:
-              type: object
