@@ -1363,6 +1363,8 @@ components:
             - direction
             - queryId
           properties:
+            protocol:
+              type: string
             peerId:
               type: string
               format: uri
@@ -1376,6 +1378,10 @@ components:
             incidentId:
               type: string
             subscriptionId:
+              type: string
+            qualFilter:
+              type: string
+            unitId:
               type: string
     SubscriptionRequestedResponseLogEvent:
       allOf:
@@ -1406,6 +1412,7 @@ components:
             - peerId
             - subscriptionId
             - direction
+            - requestId
             - reason
           properties:
             peerId:
@@ -1418,6 +1425,8 @@ components:
             reason:
               type: string
             subscriptionId:
+              type: string
+            requestId:
               type: string
     SubscriptionTerminatedResponseLogEvent:
       allOf:
@@ -1449,12 +1458,19 @@ components:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
           required:
+            - direction
             - peerId
+            - eidoDereference
             - incidentId
             - reasonCode
             - reasonText
           properties:
+            direction:
+              $ref: '#/components/schemas/Direction'
             peerId:
+              type: string
+              format: uri
+            eidoDereference:
               type: string
               format: uri
             incidentId:
