@@ -499,7 +499,7 @@ components:
              DiscrepancyReportLogEvent, ElementStateChangeLogEvent, ServiceStateChangeLogEvent, AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent, LocationQueryLogEvent, LocationResponseLogEvent, CallStateChangeLogEvent,
              GatewayCallLogEvent, HookflashLogEvent, LegacyDigitsLogEvent, AgentStateChangeLogEvent, QueueStateChangeLogEvent, KeepAliveFailureLogEvent, RouteRuleMsgLogEvent, PolicyChangeLogEvent,
              VersionsLogEvent, SubscribeLogEvent, AnnouncementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent, EidoLogEvent, EidoDereferenceFactoryQueryLogEvent, 
-             EidoDereferenceFactoryQueryResponse, SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent, SubscriptionTerminatedLogEvent, EidoDeniedLogEvent, EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent, 
+             EidoDereferenceFactoryQueryResponseLogEvent, SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent, SubscriptionTerminatedLogEvent, EidoDeniedLogEvent, EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent, 
              WebSocketTerminatedLogEvent, RequestForServiceLogEvent, RequestAwarenessLogEvent, CancelRequestLogEvent, ResponseToRequestLogEvent, ResourceMesssageLogEvent, ResourceDiscoveryLogEvent]
     LogEvent:
       type: object
@@ -1354,7 +1354,7 @@ components:
               type: string
             responseText:
               type: string
-    SubscriptionRequested:
+    SubscriptionRequestedLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
@@ -1404,7 +1404,7 @@ components:
               type: string
             errorText:
               type: string
-    SubscriptionTerminated:
+    SubscriptionTerminatedLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
