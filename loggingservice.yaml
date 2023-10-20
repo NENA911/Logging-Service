@@ -493,14 +493,37 @@ components:
           description: Array of Agency IDs
     LogEventType:
       type: string
-      enum: [CallProcessLogEvent, CallStartLogEvent, CallEndLogEvent, RecCallStartLogEvent, RecCallEndLogEvent, CallTransferLogEvent, RouteLogEvent, MediaStartLogEvent, MediaEndLogEvent, RecMediaStartLogEvent, RecMediaEndLogEvent,
-             RecordingFailedLogEvent, MessageLogEvent, AdditionalAgencyLogEvent, IncidentMergeLogEvent, IncidentUnMergeLogEvent, IncidentLinkLogEvent, IncidentUnLinkLogEvent, IncidentClearLogEvent, IncidentReopenLogEvent, LostQueryLogEvent,
-             LostResponseLogEvent, CallSignalingMessageLogEvent, SipRecMetadataLogEvent, NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent, AliLocationResponseLogEvent, MalformedMessageLogEvent, IncidentSplitLogEvent,
-             DiscrepancyReportLogEvent, ElementStateChangeLogEvent, ServiceStateChangeLogEvent, AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent, LocationQueryLogEvent, LocationResponseLogEvent, CallStateChangeLogEvent,
-             GatewayCallLogEvent, HookflashLogEvent, LegacyDigitsLogEvent, AgentStateChangeLogEvent, QueueStateChangeLogEvent, KeepAliveFailureLogEvent, RouteRuleMsgLogEvent, PolicyChangeLogEvent,
-             VersionsLogEvent, SubscribeLogEvent, AnnouncementStartLogEvent, AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent, SessionStateChangeLogEvent, EidoLogEvent, EidoDereferenceFactoryQueryLogEvent, 
-             EidoDereferenceFactoryQueryResponseLogEvent, SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent, SubscriptionTerminatedLogEvent, EidoDeniedLogEvent, EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent, 
-             WebSocketTerminatedLogEvent, RequestForServiceLogEvent, RequestAwarenessLogEvent, CancelRequestLogEvent, ResponseToRequestLogEvent, ResourceMesssageLogEvent, ResourceDiscoveryLogEvent]
+      enum: [CallProcessLogEvent, CallStartLogEvent, CallEndLogEvent,
+        RecCallStartLogEvent, RecCallEndLogEvent, CallTransferLogEvent,
+        RouteLogEvent, MediaStartLogEvent, MediaEndLogEvent,
+        RecMediaStartLogEvent, RecMediaEndLogEvent, RecordingFailedLogEvent,
+        MessageLogEvent, AdditionalAgencyLogEvent, IncidentMergeLogEvent,
+        IncidentUnMergeLogEvent, IncidentLinkLogEvent,
+        IncidentUnLinkLogEvent, IncidentClearLogEvent,
+        IncidentReopenLogEvent, LostQueryLogEvent, LostResponseLogEvent,
+        CallSignalingMessageLogEvent, SipRecMetadataLogEvent,
+        NonRtpMediaMessageLogEvent, AliLocationQueryLogEvent,
+        AliLocationResponseLogEvent, MalformedMessageLogEvent,
+        IncidentSplitLogEvent, DiscrepancyReportLogEvent,
+        ElementStateChangeLogEvent, ServiceStateChangeLogEvent,
+        AdditionalDataQueryLogEvent, AdditionalDataResponseLogEvent,
+        LocationQueryLogEvent, LocationResponseLogEvent,
+        CallStateChangeLogEvent, GatewayCallLogEvent, HookflashLogEvent,
+        LegacyDigitsLogEvent, AgentStateChangeLogEvent,
+        QueueStateChangeLogEvent, KeepAliveFailureLogEvent,
+        RouteRuleMsgLogEvent, PolicyChangeLogEvent, VersionsLogEvent,
+        SubscribeLogEvent, AnnouncementStartLogEvent,
+        AnnouncementEndLogEvent, SessionStartLogEvent, SessionEndLogEvent,
+        SessionStateChangeLogEvent, EidoLogEvent,
+        EidoDereferenceFactoryQueryLogEvent,
+        EidoDereferenceFactoryQueryResponseLogEvent,
+        SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent,
+        SubscriptionTerminatedLogEvent, EidoDeniedLogEvent,
+        EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent,
+        WebSocketTerminatedLogEvent, RequestForServiceLogEvent,
+        RequestAwarenessLogEvent, CancelRequestLogEvent,
+        ResponseToRequestLogEvent, ResourceMesssageLogEvent,
+        ResourceDiscoveryLogEvent]
     LogEvent:
       type: object
       required:
