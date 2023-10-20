@@ -518,7 +518,7 @@ components:
         EidoDereferenceFactoryQueryLogEvent,
         EidoDereferenceFactoryQueryResponseLogEvent,
         SubscriptionRequestedLogEvent, SubscriptionRequestedResponseLogEvent,
-        SubscriptionTerminatedLogEvent, EidoDeniedLogEvent,
+        SubscriptionTerminatedLogEvent, SubscriptionTerminatedResponseLogEvent, EidoDeniedLogEvent,
         EidoTransmissionErrorLogEvent, WebSocketEstablishedLogEvent,
         WebSocketTerminatedLogEvent, RequestForServiceLogEvent,
         RequestAwarenessLogEvent, CancelRequestLogEvent,
