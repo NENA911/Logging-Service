@@ -1596,6 +1596,8 @@ components:
               format: uri
             direction:
               $ref: '#/components/schemas/Direction'
+            requestId:
+              type: string
     ResponseToRequestLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
@@ -1604,7 +1606,7 @@ components:
             - peerId
             - direction
             - responseCode
-            - responseReason
+            - responseText
           properties:
             peerId:
               type: string
