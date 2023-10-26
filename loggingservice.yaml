@@ -139,7 +139,7 @@ paths:
         '454':
           description: Unspecified Error
         '464':
-          description: No Text in this Call
+          description: No Text In This Call
   /LogEventIds:
     get:
       tags:
@@ -176,13 +176,13 @@ paths:
             type: string
       responses:
         '200':
-          description: LogEvents found
+          description: LogEvents Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LogEventIdArray'
         '404':
-          description: Not found
+          description: Not Found
         '454':
           description: Unspecified Error
   /CallIds:
@@ -237,21 +237,21 @@ paths:
             type: string
       responses:
         '200':
-          description: Calls found
+          description: Calls Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CallIdArray'
         '404':
-          description: Not found
+          description: Not Found
         '454':
           description: Unspecified Error
         '465':
           description: Bad Timestamp
         '466':
-          description: endTime occurs before startTime
+          description: EndTime Occurs Before StartTime
         '467':
-          description: Bad Geoshape
+          description: Bad Or Missing Geoshape
   /IncidentIds:
     get:
       tags:
@@ -298,21 +298,21 @@ paths:
             type: string
       responses:
         '200':
-          description: Incidents found
+          description: Incidents Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/IncidentIdArray'
         '404':
-          description: Not found
+          description: Not Found
         '454':
           description: Unspecified Error
         '465':
           description: Bad Timestamp
         '466':
-          description: endTime occurs before startTime
+          description: EndTime Occurs Before StartTime
         '467':
-          description: Bad Geoshape
+          description: Bad Or Missing Geoshape
   /AgencyIds:
     get:
       tags:
@@ -349,13 +349,13 @@ paths:
             type: string
       responses:
         '200':
-          description: Agencies found
+          description: Agencies Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AgencyIdArray'
         '404':
-          description: Not found
+          description: Not Found
         '454':
           description: Unspecified Error
   /Versions:
@@ -369,7 +369,7 @@ paths:
       operationId: RetrieveVersions
       responses:
         '200':
-          description: Versions found
+          description: Versions Found
           content:
             application/json:
               schema:
