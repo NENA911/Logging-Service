@@ -51,13 +51,13 @@ paths:
             example: '2020-03-15T11:00:01-05:00'
       responses:
         '200':
-          description: LogEvents found
+          description: LogEvents Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LogEventContainerArray'
         '404':
-          description: Not found
+          description: Not Found
     post:
       tags:
         - LogEvent
@@ -72,7 +72,7 @@ paths:
         required: true
       responses:
         '201':
-          description: LogEvent successfully logged
+          description: LogEvent Successfully Logged
           content:
             application/json:
               schema:
@@ -87,11 +87,11 @@ paths:
         '460':
           description: Bad LogEvent
         '461':
-          description: LogEvent too big
+          description: LogEvent Too Big
         '462':
-          description: LogEvent extension not on approved list
+          description: LogEvent Extension Not On Approved List
         '463':
-          description: LogEvent extension on disallowed list
+          description: LogEvent Extension On Disallowed List
   /LogEvents/{logEventId}:
     get:
       tags:
@@ -107,13 +107,13 @@ paths:
             type: string
       responses:
         '200':
-          description: LogEvent found
+          description: LogEvent Found
           content:
             application/json:
               schema:
                 $ref: 'i3-common.yaml#/components/schemas/Jws'
         '404':
-          description: Not found
+          description: Not Found
   /Conversations:
     get:
       tags:
@@ -129,17 +129,17 @@ paths:
             type: string
       responses:
         '200':
-          description: Conversation found
+          description: Conversation Found
           content:
             application/json:
               schema:
                 type: string
         '404':
-          description: Not found
+          description: Not Found
         '454':
           description: Unspecified Error
         '464':
-          description: No Text in this Call
+          description: No Text In This Call
   /LogEventIds:
     get:
       tags:
@@ -176,13 +176,13 @@ paths:
             type: string
       responses:
         '200':
-          description: LogEvents found
+          description: LogEvents Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LogEventIdArray'
         '404':
-          description: Not found
+          description: Not Found
         '454':
           description: Unspecified Error
   /CallIds:
@@ -237,21 +237,21 @@ paths:
             type: string
       responses:
         '200':
-          description: Calls found
+          description: Calls Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CallIdArray'
         '404':
-          description: Not found
+          description: Not Found
         '454':
           description: Unspecified Error
         '465':
           description: Bad Timestamp
         '466':
-          description: endTime occurs before startTime
+          description: EndTime Occurs Before StartTime
         '467':
-          description: Bad Geoshape
+          description: Bad Or Missing Geoshape
   /IncidentIds:
     get:
       tags:
@@ -298,21 +298,21 @@ paths:
             type: string
       responses:
         '200':
-          description: Incidents found
+          description: Incidents Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/IncidentIdArray'
         '404':
-          description: Not found
+          description: Not Found
         '454':
           description: Unspecified Error
         '465':
           description: Bad Timestamp
         '466':
-          description: endTime occurs before startTime
+          description: EndTime Occurs Before StartTime
         '467':
-          description: Bad Geoshape
+          description: Bad Or Missing Geoshape
   /AgencyIds:
     get:
       tags:
@@ -349,13 +349,13 @@ paths:
             type: string
       responses:
         '200':
-          description: Agencies found
+          description: Agencies Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AgencyIdArray'
         '404':
-          description: Not found
+          description: Not Found
         '454':
           description: Unspecified Error
   /Versions:
@@ -369,7 +369,7 @@ paths:
       operationId: RetrieveVersions
       responses:
         '200':
-          description: Versions found
+          description: Versions Found
           content:
             application/json:
               schema:
