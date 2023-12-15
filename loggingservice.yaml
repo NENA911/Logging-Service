@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.2.1"
+  version: "1.2.2"
 servers:
   - url: https://api.example.com/Logging/v1
 paths:
@@ -601,7 +601,6 @@ components:
         - type: object
           required:
             - sdp
-            - mediaLabal
             - direction
           properties:
             sdp:
@@ -617,8 +616,7 @@ components:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
           required:
-            - mediaLabel
-          properties:
+           properties:
             mediaLabel:
               type: array
               items:
@@ -631,7 +629,6 @@ components:
         - type: object
           required:
             - sdp
-            - mediaLabel
           properties:
             sdp:
               type: string
@@ -648,7 +645,6 @@ components:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
           required:
-            - mediaLabel
           properties:
             mediaLabel:
               type: array
