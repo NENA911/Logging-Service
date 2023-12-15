@@ -615,8 +615,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
-          required:
-           properties:
+          properties:
             mediaLabel:
               type: array
               items:
@@ -644,7 +643,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
-          required:
           properties:
             mediaLabel:
               type: array
@@ -1507,7 +1505,6 @@ components:
               type: string
             webSocketId:
               type: string
-
     WebSocketTerminatedLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
