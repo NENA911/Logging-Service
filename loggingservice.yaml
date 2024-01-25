@@ -617,7 +617,7 @@ components:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
           required:
-          - mediaLabel
+            - mediaLabel
           properties:
             mediaLabel:
               type: array
@@ -648,7 +648,7 @@ components:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
           required:
-          - mediaLabel
+            - mediaLabel
           properties:
             mediaLabel:
               type: array
