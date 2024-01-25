@@ -602,6 +602,7 @@ components:
           required:
             - sdp
             - direction
+            - mediaLabel
           properties:
             sdp:
               type: string
@@ -615,6 +616,8 @@ components:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
+          required:
+          - mediaLabel
           properties:
             mediaLabel:
               type: array
@@ -628,6 +631,7 @@ components:
         - type: object
           required:
             - sdp
+            - mediaLabel
           properties:
             sdp:
               type: string
@@ -643,6 +647,8 @@ components:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
         - type: object
+          required:
+          - mediaLabel
           properties:
             mediaLabel:
               type: array
