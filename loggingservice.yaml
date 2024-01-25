@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.2.1"
+  version: "1.2.2"
 servers:
   - url: https://api.example.com/Logging/v1
 paths:
@@ -601,8 +601,8 @@ components:
         - type: object
           required:
             - sdp
-            - mediaLabal
             - direction
+            - mediaLabel
           properties:
             sdp:
               type: string
@@ -1511,7 +1511,6 @@ components:
               type: string
             webSocketId:
               type: string
-
     WebSocketTerminatedLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
