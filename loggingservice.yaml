@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Logging Service
-  version: "1.3.0"
+  version: "1.4.0"
 servers:
   - url: https://api.example.com/Logging/v1
 paths:
@@ -560,6 +560,15 @@ components:
           type: object
       discriminator:
         propertyName: logEventType
+    AdditionalDataAddedLogEvent:
+      allOf:
+        - $ref: "#/components/schemas/LogEvent"
+        - type: object
+          required:
+            - block
+          properties:
+            block:
+              type: string
     CallProcessLogEvent:
       allOf:
         - $ref: '#/components/schemas/LogEvent'
@@ -1085,6 +1094,8 @@ components:
             signallingProtocol:
               type: string
             legacyCallId:
+              type: string
+            esn:
               type: string
     HookflashLogEvent:
       allOf:
