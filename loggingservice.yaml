@@ -3,7 +3,11 @@ info:
   title: Logging Service
   version: "1.4.0"
 servers:
-  - url: https://api.example.com/Logging/v1
+  - url: "{base_url}/v1"
+    variables:
+      base_url:
+        default: https://localhost/Logging
+        description: Base URL for endpoint construction.
 paths:
   /LogEvents:
     get:
@@ -68,7 +72,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'i3-common.yaml#/components/schemas/Jws'
+              $ref: 'https://raw.githubusercontent.com/dthvt/i3-common/refs/heads/metadata-example/i3-common.yaml#/components/schemas/Jws'
         required: true
       responses:
         '201':
@@ -111,7 +115,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'i3-common.yaml#/components/schemas/Jws'
+                $ref: 'https://raw.githubusercontent.com/dthvt/i3-common/refs/heads/metadata-example/i3-common.yaml#/components/schemas/Jws'
         '404':
           description: Not found
   /Conversations:
@@ -358,10 +362,16 @@ paths:
           description: Not found
         '454':
           description: Unspecified Error
+  /Metadata:
+    $ref: 'https://raw.githubusercontent.com/dthvt/i3-common/refs/heads/metadata-example/i3-common.yaml#/Metadata'
   /Versions:
     servers:
-      - url: https://api.example.com/Logging
+      - url: "{base_url}/"
         description: Override base path for Versions query
+        variables:
+          base_url:
+            default: https://localhost/Logging
+            description: Base URL for endpoint construction.
     get:
       tags:
         - RetrieveVersions
@@ -373,7 +383,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'i3-common.yaml#/components/schemas/VersionsArray'
+                $ref: 'https://raw.githubusercontent.com/dthvt/i3-common/refs/heads/metadata-example/i3-common.yaml#/components/schemas/Metadata'
 components:
   schemas:
     LogEventContainerArray:
@@ -410,7 +420,7 @@ components:
           items:
             type: string
         logEvent:
-          $ref: 'i3-common.yaml#/components/schemas/Jws'
+          $ref: 'https://raw.githubusercontent.com/dthvt/i3-common/refs/heads/metadata-example/i3-common.yaml#/components/schemas/Jws'
     LogEventIdArray:
       type: object
       required:
