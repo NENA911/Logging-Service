@@ -466,7 +466,7 @@ components:
           type: integer
           format: int32
           description: Total number of items found
-        logEventIds:
+        incidentIds:
           type: array
           items:
             type: string
